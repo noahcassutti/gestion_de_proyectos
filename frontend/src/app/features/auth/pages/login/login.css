@@ -1,0 +1,101 @@
+.main-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    width: 100%;
+    background-color: var(--p-cyan-950);
+}
+.titulo-container{
+    background: transparent !important;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 1rem;
+}
+
+.titulo-principal {
+    font-size: 2rem;
+    color: white;
+    margin-top: 10px;
+}
+
+.texto-login{
+    text-align: center;
+    width: 100%;
+    font-size: 2.2rem;
+}
+.tarjeta {
+    background-color: var(--p-blue-100);
+    background: linear-gradient(180deg, #ffffff 40%, #227491f7 100%) !important;
+    width: min(92vw, 420px);
+    min-height: 470px;
+    border-radius: 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.tarjeta:hover {
+    transform: translateY(-5px) scale(1.03);
+    box-shadow: 0 15px 35px var(--p-blue-150);
+}
+
+.formulario {
+    width: 100%;
+}
+.campo {
+    width: 100%;
+}
+.form-text{
+    text-align: center;
+    width: 100%;
+    font-size: 1rem;
+    color: var(--p-stone-900);
+}
+
+input, input::placeholder{
+    width: 100%;
+    background-color: #ffff;
+    color: var(--p-gray-600);
+}
+
+.error-message,
+.login-error {
+    color: #b91c1c;
+    font-size: 0.9rem;
+    text-align: left;
+}
+
+.login-error {
+    background: rgba(185, 28, 28, 0.08);
+    border: 1px solid rgba(185, 28, 28, 0.25);
+    border-radius: 12px;
+    padding: 0.75rem 1rem;
+}
+
+.boton-contenedor {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+:host ::ng-deep .password-field {
+    width: 100%;
+}
+:host ::ng-deep .password-field .p-inputtext {
+    width: 100%;
+}
+:host ::ng-deep .boton {
+    background-color: var(--p-cyan-950);
+    border-color: var(--p-cyan-950) !important;
+    border-radius: 14px !important;
+    width: 100%;
+    height: 50px;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+:host ::ng-deep .boton:hover {
+    background-color: #286484; 
+}
+:host ::ng-deep .p-button-label {
+    color: rgb(246, 243, 243) !important;
+}

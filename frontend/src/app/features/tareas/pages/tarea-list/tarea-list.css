@@ -1,0 +1,205 @@
+.main-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 90vh;
+    padding: 24px;
+    box-sizing: border-box;
+}
+
+.header-row {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 32px;
+}
+
+/* cositos celestes */
+.badge-wrapper {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto 32px auto;
+}
+
+.badge-blue {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #e0f2fe !important;
+    border: 1px solid #bae6fd !important;
+    border-radius: 12px;
+    padding: 16px;
+    flex: 1; 
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.badge-text-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+
+.badge-title {
+    color: #1e293b;
+    font-weight: 700;
+    font-size: 16px;
+    letter-spacing: 0.05em;
+}
+
+.badge-subtitle {
+    color: #64748b;
+    font-size: 14px;
+}
+
+/* btn crear nueva tarea */
+.action-row {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 32px;
+}
+
+.btn-agregar-tarea {
+    background-color:var(--p-cyan-950)  !important;
+    color: var(--p-slate-50) !important;
+    border: none !important;
+    padding: 12px 24px !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.05em !important;
+    border-radius: 8px !important;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.btn-agregar-tarea:hover {
+    background: var(--p-cyan-800) !important;
+}
+ /* tabla */
+.table-wrapper {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    flex-grow: 1;
+}
+
+.custom-table {
+    width: 100%;
+    max-width: 1000px;
+}
+
+:host .custom-table .p-datatable-table {
+    border-collapse: collapse !important;
+    width: 100% !important;
+}
+
+:host .custom-table .col-nombre {
+    background-color: var(--p-blue-50) !important;
+    color: #1e293b !important;
+    font-weight: 600 !important;
+    text-align: center !important;
+    padding: 14px !important;
+    border: 1px solid #64748b !important;
+}
+
+:host .custom-table .col-estado {
+    background-color: var(--p-orange-100) !important;
+    color: #1e293b !important;
+    font-weight: 600 !important;
+    text-align: center !important;
+    padding: 14px !important;
+    border: 1px solid #64748b !important;
+}
+
+:host .custom-table .col-acciones {
+    background-color: var(--p-lime-100) !important;
+    color: #25292f !important;
+    font-weight: 600 !important;
+    text-align: center !important;
+    padding: 14px !important;
+    border: 1px solid #64748b !important;
+}
+
+:host .custom-table .col-fecha-inicio {
+    background-color: var(--p-purple-100) !important;
+    color: #25292f !important;
+    font-weight: 600 !important;
+    text-align: center !important;
+    padding: 14px !important;
+    border: 1px solid #64748b !important;
+}
+
+:host .custom-table .col-fecha-limite {
+    background-color: var(--p-red-100) !important;
+    color: #25292f !important;
+    font-weight: 600 !important;
+    text-align: center !important;
+    padding: 14px !important;
+    border: 1px solid #64748b !important;
+}
+
+/* Celdas del Cuerpo */
+.col-cell, .col-fecha {
+    background-color: #ffffff !important;
+    color: #1e293b !important;
+    text-align: center !important;
+    padding: 14px !important;
+    border: 1px solid #64748b !important;
+    height: 48px;
+}
+
+:host .custom-table .empty-cell {
+    text-align: center !important;
+    padding: 24px !important;
+    color: #64748b !important;
+    border: 1px solid #64748b !important;
+    background-color: #f8fafc !important;
+}
+
+.custom-table :is(.p-inputtext, input) {
+    background-color: #fefeff !important;
+    color: #1e293b !important;
+}
+
+span .p-select, .p-select-label {
+    background-color: #fefeff !important;
+    color: #1e293b !important;
+}
+
+.footer-row {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+    margin-top: 32px;
+    width: 100%;
+}
+/* footer */
+.btn-download {
+    background-color: var(--p-cyan-950) !important;
+    color: var(--p-slate-50) !important;
+    border: none !important;
+    padding: 10px 24px !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.05em !important;
+    border-radius: 8px !important;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.btn-dark:hover,
+.btn-download:hover {
+    background: var(--p-cyan-800) !important;
+}
+
+.footer-text {
+    color: var(--p-gray-400);
+    font-size: 12px;
+    letter-spacing: 0.05em;
+}

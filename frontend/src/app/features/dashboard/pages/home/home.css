@@ -1,0 +1,192 @@
+
+.dashboard-container {
+  padding: 2rem;
+  color: var(--p-slate-900);
+  font-family: sans-serif;
+  background-color: #ffffff;
+}
+
+.dashboard-header {
+  margin-bottom: 2rem;
+}
+
+.dashboard-header h2 {
+  font-weight: 400;
+  margin: 0;
+}
+
+
+.quick-access-cards {
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.card-item {
+  flex: 1;
+  background-color: #e0f2fe !important;
+  border-radius: 12px;
+  padding: 1.2rem 1.5rem; 
+  display: flex;
+  align-items: center;       
+  justify-content: space-between; 
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
+  transition: transform 0.3s ease;
+  width: 80px;
+  height: 140px;
+}
+
+.card-item:hover {
+  transform: translateY(-5px);
+}
+
+
+.card-icon {
+  display: flex;
+  align-items: center;       
+  margin-right: 1.2rem;       
+}
+
+.card-icon i {
+  font-size: 2rem;           
+  color: var(--p-slate-900);
+  line-height: 1;            
+}
+
+
+.card-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;   
+}
+
+.card-content h3 {
+  margin: 0 0 0.2rem 0;     
+  font-size: 0.95rem;        
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.card-content p {
+  margin: 0;
+  font-size: 0.8rem;         
+  color: #5c6c7c;
+  line-height: 1.2;
+}
+
+
+::ng-deep .action-btn {
+  display: inline-flex;
+  align-items: center;       
+  justify-content: center;
+}
+
+::ng-deep .action-btn .p-button-icon {
+  font-size: 1.8rem !important; 
+  color: var(--p-slate-900) !important;
+}
+
+
+.dashboard-main-content {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr; 
+  gap: 1.5rem;
+  align-items: stretch;
+}
+
+.dashboard-card {
+  background-color: #e0f2fe !important;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
+}
+
+.card-content h3 {
+  margin: 0 0 0.3rem 0;
+  font-size: 1.1rem; 
+  font-weight: 600;
+}
+
+.card-content p {
+  margin: 0;
+  font-size: 1rem;  
+  color: #5c6c7c;
+}
+
+
+.chart-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.chart-header h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.chart-container {
+  height: 350px;
+  width: 100%;
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* --- calendario --- */
+.header-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+}
+
+.header-card h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.header-card p {
+  margin: 4px 0 0 0;
+  font-size: 0.85rem;
+  color: #5c6c7c;
+}
+
+.ver-calendario-btn {
+  background: none;
+  border: none;
+  color: #2563eb;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.calendar-container-inner {
+  width: 100%;
+  overflow: hidden;
+}
+
+
+:host ::ng-deep .fc {
+  background: transparent !important;
+  border: none !important;
+  font-size: 0.9rem;
+}
+
+
+@media (max-width: 1100px) {
+  .dashboard-main-content {
+    grid-template-columns: 1fr; 
+  }
+}
+
+@media (max-width: 768px) {
+  .quick-access-cards {
+    flex-direction: column;
+  }
+}

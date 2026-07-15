@@ -1,0 +1,45 @@
+<div class="modal-form">
+    <button type="button" class="close-button" (click)="cerrar()">
+        <i class="pi pi-times"></i>
+    </button>
+
+    <h2 class="modal-title">Nuevo Proyecto</h2>
+
+    <div class="field">
+        <label class="field-label">Nombre de PROYECTO</label>
+        <input 
+            type="text" 
+            pInputText 
+            [(ngModel)]="proyecto.nombre" 
+            #nombreInput="ngModel"
+            required
+            minlength="5"
+            placeholder="Ingrese nombre del proyecto" 
+            class="w-full custom-input" 
+            [ngClass]="{'ng-invalid ng-dirty': nombreInput.invalid && (nombreInput.dirty || nombreInput.touched)}"
+        />
+        <div *ngIf="nombreInput.invalid && (nombreInput.dirty || nombreInput.touched)">
+            <small class="p-error block mt-1" *ngIf="nombreInput.errors?.['required']">
+                El nombre es obligatorio.
+            </small>
+        </div>
+    </div>
+
+    <div class="field" style="margin-top: 1.5rem;">
+        <label class="field-label">CLIENTE ASIGNADO</label>
+        <p-select 
+            [options]="clientesDisponibles" 
+            optionLabel="nombre" 
+            optionValue="id" 
+            [(ngModel)]="proyecto.idCliente" 
+            #clienteInput="ngModel"
+            placeholder="Seleccione un cliente" 
+            class="w-full custom-select"
+            appendTo="body">
+        </p-select>
+    </div>
+
+    <div class="footer-actions">
+        <p-button label="GUARDAR" styleClass="btn-guardar-premium" (onClick)="guardar()" [disabled]="!formularioValido()"></p-button>
+    </div>
+</div>

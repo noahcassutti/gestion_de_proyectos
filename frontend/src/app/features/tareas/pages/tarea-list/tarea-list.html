@@ -1,0 +1,158 @@
+<div class="main-container">
+    <p-toast />
+    
+    <div class="header-row">
+        <app-back></app-back>
+
+        <div class="badge-wrapper">
+                    <div class="badge-blue">
+                        <div class="badge-text-box">
+                            <span class="badge-title">NOMBRE PROYECTO</span>
+                            <span class="badge-subtitle">{{ infoProyecto()?.nombre || 'Cargando...' }}</span>
+                        </div>
+                    </div>
+
+                    <div class="badge-blue">
+                        <div class="badge-text-box">
+                            <span class="badge-title">ESTADO</span>
+                            <span class="badge-subtitle">{{ infoProyecto()?.estado || 'Cargando...' }}</span>
+                        </div>
+                    </div>
+
+                <div class="badge-blue">
+                    <div class="badge-text-box">
+                        <span class="badge-title">CLIENTE</span>
+                        <span class="badge-subtitle">{{ infoProyecto()?.cliente?.nombre || 'Proyecto Interno' }}</span>
+                    </div>
+                </div>
+        </div>
+    </div>
+
+    <div class="action-row">
+       <button
+            pButton
+            type="button"
+            label="CREAR NUEVA TAREA"
+            class="btn-agregar-tarea"
+            icon="pi pi-plus-circle"
+            (click)="crearNuevaTarea()"
+            [disabled]="!esProyectoActivo">
+        </button>
+    </div>
+
+    <div class="table-wrapper">
+        <p-table #dt 
+                [value]="tareas()" 
+                dataKey="id" 
+                editMode="row" 
+                class="custom-table">
+            <ng-template #header>
+                <tr>
+                    <th class="col-nombre" style="width: 35%">Descripción de la Tarea</th>
+                    <th class="col-estado" style="width: 20%">Estado</th>
+                    <th class="col-fecha-inicio" style="width: 15%">Fecha Inicio</th>
+                    <th class="col-fecha-limite" style="width: 15%">Fecha Límite</th>
+                    <th class="col-acciones" style="width: 15%">Acciones</th>
+                </tr>
+            </ng-template>
+            
+            <ng-template #body let-tarea let-editing="editing" let-ri="rowIndex">
+                <tr [pEditableRow]="tarea">
+                    
+                    <td class="col-cell">
+                        <p-cellEditor>
+                            <ng-template #input>
+                                <input pInputText type="text" [(ngModel)]="tarea.descripcion" required style="width: 100%" />
+                            </ng-template>
+                            <ng-template #output>
+                                {{ tarea.descripcion }}
+                            </ng-template>
+                        </p-cellEditor>
+                    </td>
+
+                    <td class="col-cell text-center">
+                        <p-cellEditor>
+                            <ng-template #input>
+                                <p-select 
+                                    [options]="statuses" 
+                                    optionLabel="label" 
+                                    optionValue="value" 
+                                    appendTo="body" 
+                                    [(ngModel)]="tarea.estado" 
+                                    [style]="{ width: '100%' }" />
+                            </ng-template>
+                            <ng-template #output>
+                                <p-tag [value]="getLabelEstado(tarea.estado)" [severity]="getSeverity(tarea.estado)" />
+                            </ng-template>
+                        </p-cellEditor>
+                    </td>
+
+                    <td class="col-cell text-center">
+                        <p-cellEditor>
+                            <ng-template #input>
+                                <input pInputText type="date" [(ngModel)]="tarea.fecha_inicio" style="width: 100%" />
+                            </ng-template>
+                            <ng-template #output>
+                                {{ (tarea.fecha_inicio | date:'dd/MM/yyyy') || '-' }}
+                            </ng-template>
+                        </p-cellEditor>
+                    </td>
+
+                    <td class="col-cell text-center">
+                        <p-cellEditor>
+                            <ng-template #input>
+                                <input pInputText type="date" [(ngModel)]="tarea.fecha_limite" style="width: 100%" />
+                            </ng-template>
+                            <ng-template #output>
+                                {{ (tarea.fecha_limite | date:'dd/MM/yyyy') || '-' }}
+                            </ng-template>
+                        </p-cellEditor>
+                    </td>
+                    
+                   <td class="col-cell text-center">
+                        <div class="flex items-center justify-center gap-2">
+                            @if (!editing) {
+                                <button pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil" 
+                                    (click)="onRowEditInit(tarea)" 
+                                    class="p-button-rounded p-button-text p-button-secondary"
+                                    [disabled]="!esProyectoActivo">
+                                </button>
+                                
+                                @if (rolActual === 'ADMIN') {
+                                    <button pButton pRipple type="button" icon="pi pi-trash" 
+                                        (click)="confirmDeleteTarea(tarea)" 
+                                        class="p-button-rounded p-button-text p-button-danger"
+                                        [disabled]="!esProyectoActivo">
+                                    </button>
+                                }
+                            } @else {
+                                <button pButton pRipple type="button" pSaveEditableRow icon="pi pi-check" (click)="onRowEditSave(tarea)" class="p-button-rounded p-button-text p-button-success"></button>
+                                
+                                <button pButton pRipple type="button" pCancelEditableRow icon="pi pi-times" (click)="onRowEditCancel(tarea, ri)" class="p-button-rounded p-button-text p-button-danger"></button>
+                            }
+                        </div>
+                    </td>
+                </tr>
+                
+            </ng-template>
+
+            <ng-template #emptymessage>
+                <tr>
+                    <td colspan="5" class="empty-cell">
+                        No se encontraron tareas en este proyecto.
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+
+    <app-download 
+            label="DESCARGAR REPORTE CSV" 
+            [disabled]="tareas().length === 0"
+            (click)="exportarCsvBackend()"> 
+    </app-download>
+        
+        <span class="footer-text">
+            DAW - Sistema de Gestión de Proyectos © 2026
+        </span>
+</div>

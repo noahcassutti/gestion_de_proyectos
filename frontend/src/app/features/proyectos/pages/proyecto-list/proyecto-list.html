@@ -1,0 +1,158 @@
+<div class="main-container">
+    <p-toast />
+    
+    <div class="header-row">
+        <app-back></app-back>
+
+        <div class="badge-wrapper">
+            <div class="badge-blue">
+                <div class="badge-text-box">
+                    <span class="badge-title">MÓDULO</span>
+                    <span class="badge-subtitle">Gestión de Proyectos</span>
+                </div>
+            </div>
+            <div class="badge-blue">
+                <div class="badge-text-box">
+                    <span class="badge-title">ESTADO DE SISTEMA</span>
+                    <span class="badge-subtitle">En Línea</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="action-row">
+        <button
+            pButton
+            type="button"
+            label="NUEVO PROYECTO"
+            class="btn-agregar-tarea"
+            icon="pi pi-plus-circle"
+            (click)="crearNuevoProyecto()">
+        </button>
+    </div>
+
+    <div class="table-wrapper">
+        <p-table #dt 
+                [value]="proyectos()" 
+                dataKey="id" 
+                editMode="row" 
+                class="custom-table"
+                [lazy]="true"
+                (onLazyLoad)="cargarProyectosLazy($event)"
+                [paginator]="true" 
+                [rows]="10" 
+                [totalRecords]="totalRegistros">
+            
+            <ng-template #caption>
+                <div style="display: flex; justify-content: flex-end; gap: 1rem; padding-bottom: 1rem; align-items: center; flex-wrap: wrap;">
+                    
+                    <p-select 
+                        [options]="statuses" 
+                        optionLabel="label" 
+                        optionValue="value"
+                        placeholder="Todos los estados" 
+                        (onChange)="dt.filter($event.value, 'estado', 'equals')"
+                        [showClear]="true"
+                        styleClass="custom-select"
+                        [style]="{ width: '200px' }">
+                    </p-select>
+
+                    <span style="position: relative; width: 100%; max-width: 300px;">
+                        <i class="pi pi-search" style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: #64748b;"></i>
+                        <input 
+                            pInputText 
+                            type="text" 
+                            (input)="dt.filterGlobal($any($event.target).value, 'contains')" 
+                            placeholder="Buscar proyecto en la BD..." 
+                            style="width: 100%; padding-left: 2.5rem; border-radius: 8px; border: 1px solid #bae6fd;" 
+                        />
+                    </span>
+                </div>
+            </ng-template>
+
+            <ng-template #header>
+                <tr>
+                    <th class="col-nombre" style="width: 35%">Nombre Proyecto</th>
+                    <th class="col-nombre" style="width: 25%">Cliente</th>
+                    <th class="col-estado" style="width: 20%">Estado</th>
+                    <th class="col-acciones" style="width: 20%">Acciones</th>
+                </tr>
+            </ng-template>
+            
+            <ng-template #body let-proyecto let-editing="editing" let-ri="rowIndex">
+                <tr [pEditableRow]="proyecto">
+                    <td class="col-cell">
+                        <p-cellEditor>
+                            <ng-template #input>
+                                <input pInputText type="text" [(ngModel)]="proyecto.nombre" required style="width: 100%" />
+                            </ng-template>
+                            <ng-template #output>
+                                <strong>{{ proyecto.nombre }}</strong>
+                            </ng-template>
+                        </p-cellEditor>
+                    </td>
+
+                    <td class="col-cell">
+                        @if (proyecto.cliente?.nombre) {
+                            {{ proyecto.cliente.nombre }}
+                        } @else {
+                            <span style="color: #64748b; font-style: italic;">Proyecto Interno</span>
+                        }
+                    </td>
+
+                    <td class="col-cell text-center">
+                        <p-cellEditor>
+                            <ng-template #input>
+                                <p-select 
+                                    [options]="statuses" 
+                                    optionLabel="label" 
+                                    optionValue="value" 
+                                    appendTo="body" 
+                                    [(ngModel)]="proyecto.estado" 
+                                    [style]="{ width: '100%' }" />
+                            </ng-template>
+                            <ng-template #output>
+                                <p-tag [value]="proyecto.estado" [severity]="getSeverity(proyecto.estado)" />
+                            </ng-template>  
+                        </p-cellEditor>
+                    </td>
+                    
+                    <td class="col-cell text-center">
+                        <div class="flex items-center justify-center gap-2">
+                            @if (!editing) {
+                                <button pButton pRipple type="button" icon="pi pi-eye" (click)="verDetalleProyecto(proyecto)" class="p-button-rounded p-button-text p-button-info" pTooltip="Ver Tareas"></button>
+                                <button pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil" (click)="onRowEditInit(proyecto)" class="p-button-rounded p-button-text p-button-secondary"></button>
+                                @if (proyecto.estado !== 'BAJA' && rolActual === 'ADMIN') {
+                                    <button pButton pRipple type="button" icon="pi pi-trash" (click)="eliminarProyecto(proyecto)" class="p-button-rounded p-button-text p-button-danger"></button>
+                                }
+                            } @else {
+                                <button pButton pRipple type="button" pSaveEditableRow icon="pi pi-check" (click)="onRowEditSave(proyecto)" class="p-button-rounded p-button-text p-button-success"></button>
+                                <button pButton pRipple type="button" pCancelEditableRow icon="pi pi-times" (click)="onRowEditCancel(proyecto, ri)" class="p-button-rounded p-button-text p-button-danger"></button>
+                            }
+                        </div>
+                    </td>
+                </tr>
+            </ng-template>
+
+            <ng-template #emptymessage>
+                <tr>
+                    <td colspan="4" class="empty-cell">
+                        No hay proyectos que coincidan con la búsqueda.
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+
+    <div class="footer-row">
+        <app-download 
+            label="DESCARGAR REPORTE CSV" 
+            [disabled]="proyectos().length === 0"
+            (btnClick)="exportarCsvBackend()">
+        </app-download>
+
+        <span class="footer-text">
+            DAW - Sistema de Gestión de Proyectos © 2026
+        </span>
+    </div>
+</div>

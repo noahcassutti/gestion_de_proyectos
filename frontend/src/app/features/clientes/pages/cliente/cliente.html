@@ -1,0 +1,160 @@
+<div class="flex h-screen w-full overflow-hidden">
+  <main class="w-full p-4">
+    <p-card styleClass="w-full shadow-md rounded-xl p-2">
+      <p-toast />
+
+   <div class="header-actions">
+  
+      <div class="div-flechita">
+        <app-back></app-back>
+      </div>
+
+      <div class="div-btn-cliente">
+        <button
+          pButton
+          type="button"
+          label="Nuevo Cliente"
+          class="btn-agregar-cliente"
+          icon="pi pi-plus-circle"
+          (click)="crearNuevoCliente()">
+        </button>
+      </div>
+
+    </div>
+
+      <div class="w-full overflow-x-auto">
+        <p-table
+          [value]="clientes"
+          dataKey="id"
+          editMode="row"
+          [tableStyle]="{ 'width': '100%', 'border-collapse': 'collapse' }">
+
+          <ng-template #header>
+            <tr>
+              <th style="background-color: #e0f2fe; color: #334155; text-align: center; border: 1px solid #cbd5e1; padding: 12px; font-weight: 600;">Nombre</th>
+              <th style="background-color: #ffedd5; color: #334155; text-align: center; border: 1px solid #cbd5e1; padding: 12px; font-weight: 600;">Estado</th>
+              <th style="background-color: #bbf7d0; color: #334155; text-align: center; border: 1px solid #cbd5e1; padding: 12px; font-weight: 600;">Teléfono</th>
+              <th style="background-color: #ffedd5; color: #334155; text-align: center; border: 1px solid #cbd5e1; padding: 12px; font-weight: 600;">Correo</th>
+              <th style="background-color: #bbf7d0; color: #334155; text-align: center; border: 1px solid #cbd5e1; padding: 12px; width: 15%; font-weight: 600;">Acciones</th>
+            </tr>
+          </ng-template>
+
+          <ng-template #body let-cliente let-editing="editing" let-ri="rowIndex">
+            <tr [pEditableRow]="cliente" style="height: 60px;">
+
+              <td style="border: 1px solid #cbd5e1; padding: 10px; text-align: center;">
+                <p-cellEditor>
+                  <ng-template #input>
+                    <input pInputText type="text" [(ngModel)]="cliente.nombre" class="w-full" />
+                  </ng-template>
+                  <ng-template #output>
+                    {{ cliente.nombre }}
+                  </ng-template>
+                </p-cellEditor>
+              </td>
+
+              <td style="border: 1px solid #cbd5e1; padding: 10px; text-align: center;">
+                <p-cellEditor>
+                  <ng-template #input>
+                    <p-select
+                      [options]="estados"
+                      appendTo="body"
+                      [(ngModel)]="cliente.estado"
+                      [disabled]="true"
+                      [style]="{ 'width': '100%' }" />
+                  </ng-template>
+                  <ng-template #output>
+                    <span [class.text-red-500]="cliente.estado === 'BAJA'" style="font-weight: 500;">
+                      {{ cliente.estado === 'ACTIVO' ? 'Activo' : 'Baja' }}
+                    </span>
+                  </ng-template>
+                </p-cellEditor>
+              </td>
+
+              <td style="border: 1px solid #cbd5e1; padding: 10px; text-align: center;">
+                <p-cellEditor>
+                  <ng-template #input>
+                    <input pInputText type="text" [(ngModel)]="cliente.telefono" class="w-full" />
+                  </ng-template>
+                  <ng-template #output>
+                    {{ cliente.telefono }}
+                  </ng-template>
+                </p-cellEditor>
+              </td>
+
+              <td style="border: 1px solid #cbd5e1; padding: 10px; text-align: center;">
+                <p-cellEditor>
+                  <ng-template #input>
+                    <input pInputText type="text" [(ngModel)]="cliente.correo" class="w-full" />
+                  </ng-template>
+                  <ng-template #output>
+                    {{ cliente.correo }}
+                  </ng-template>
+                </p-cellEditor>
+              </td>
+
+           <td style="border: 1px solid #cbd5e1; padding: 10px; text-align: center;">
+                  <div class="flex justify-content-center align-items-center gap-3">
+
+                    @if (cliente.estado?.toUpperCase() !== 'BAJA') {
+                      @if (!editing) {
+                        <button
+                          pButton
+                          type="button"
+                          pInitEditableRow
+                          icon="pi pi-pencil"
+                          (click)="onRowEditInit(cliente)"
+                          style="color: #0f766e; background: none; border: none; font-size: 1.4rem;">
+                        </button>
+
+                        <p-button
+                          icon="pi pi-times"
+                          severity="danger"
+                          [rounded]="true"
+                          [text]="true"
+                          (click)="solicitarEliminarCliente(cliente)">
+                        </p-button>
+
+                      }
+
+                      @if (editing) {
+
+                        <button
+                          pButton
+                          type="button"
+                          pSaveEditableRow
+                          icon="pi pi-check"
+                          (click)="onRowEditSave(cliente)"
+                          style="color: #16a34a; background: none; border: none;">
+                        </button>
+
+                        <button
+                          pButton
+                          type="button"
+                          pCancelEditableRow
+                          icon="pi pi-times"
+                          (click)="onRowEditCancel(cliente, ri)"
+                          style="color: #dc2626; background: none; border: none;">
+                        </button>
+                      }
+                    }
+
+                </div>
+              </td>
+        
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+
+    </p-card>
+  </main>
+
+  <div class="footer-row">
+        <app-download 
+            label="DESCARGAR REPORTE CSV" 
+            [disabled]="clientes.length === 0"
+            (btnClick)="exportarCsvBackend()">
+        </app-download>
+  </div>
+</div>

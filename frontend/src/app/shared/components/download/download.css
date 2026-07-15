@@ -1,0 +1,21 @@
+.btn-download {
+    background-color: var(--p-cyan-950) !important;
+    color: var(--p-slate-50) !important;
+    border: none !important;
+    padding: 10px 24px !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.05em !important;
+    border-radius: 8px !important;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.btn-download:hover {
+    background: var(--p-cyan-800) !important;
+}
+
+.btn-download:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}

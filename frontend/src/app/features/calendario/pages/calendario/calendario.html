@@ -1,0 +1,10 @@
+<div class="calendario-page-container">
+  <div class="calendario-header">
+    <h2>Calendario General</h2>
+    <p>Gestiona y visualiza todas tus tareas y eventos mensuales</p>
+  </div>
+
+  <div class="main-calendar-card">
+    <full-calendar *ngIf="isBrowser && eventsLoaded" [options]="calendarOptions"></full-calendar>
+  </div>
+</div>

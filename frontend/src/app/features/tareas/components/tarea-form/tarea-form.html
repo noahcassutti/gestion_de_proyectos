@@ -1,0 +1,90 @@
+<div class="modal-form">
+  <button type="button" class="close-button" (click)="cerrar()">
+    <i class="pi pi-times"></i>
+  </button>
+
+  <h2 class="modal-title">Nueva Tarea</h2>
+
+  <div class="field">
+    <label for="titulo">TÍTULO DE LA TAREA</label>
+    <input 
+      id="titulo"
+      type="text" 
+      pInputText 
+      [(ngModel)]="tarea.titulo" 
+      #tituloInput="ngModel"
+      required
+      minlength="5"
+      placeholder="Ej: Diseñar el login" 
+      class="custom-input w-full" 
+      [ngClass]="{'ng-invalid ng-dirty': tituloInput.invalid && (tituloInput.dirty || tituloInput.touched)}"
+    />
+    <div *ngIf="tituloInput.invalid && (tituloInput.dirty || tituloInput.touched)">
+        <small class="p-error block mt-1" *ngIf="tituloInput.errors?.['required']">El titulo es obligatorio.</small>
+        <small class="p-error block mt-1" *ngIf="tituloInput.errors?.['minlength']">Debe tener al menos 5 caracteres.</small>
+    </div>
+  </div>
+
+  <div class="field">
+    <label for="proyecto">PROYECTO ASIGNADO</label>
+    <p-select 
+      id="proyecto"
+      [options]="proyectosDisponibles" 
+      [(ngModel)]="tarea.proyectoId" 
+      #proyectoInput="ngModel"
+      required
+      optionLabel="nombre" 
+      optionValue="id"
+      placeholder="Seleccione un proyecto" 
+      styleClass="custom-select w-full"
+      appendTo="body"
+      [disabled]="isProyectoFijo"
+      [ngClass]="{'ng-invalid ng-dirty': proyectoInput.invalid && (proyectoInput.dirty || proyectoInput.touched)}"> 
+    </p-select>
+    <small class="p-error block mt-1" *ngIf="proyectoInput.invalid && (proyectoInput.dirty || proyectoInput.touched)">
+      Debe seleccionar un proyecto.
+    </small>
+  </div>
+
+  <div class="grid px-3">
+    <div class="col-12 md:col-6 field mb-3 flex flex-column gap-2 text-left">
+      <label for="fecha_inicio" class="font-semibold" style="color: #475569;">Fecha de Inicio</label>
+      <p-datepicker 
+        id="fecha_inicio" 
+        [(ngModel)]="tarea.fechaInicio" 
+        name="fechaInicio"
+        #inicioInput="ngModel"
+        dateFormat="yy-mm-dd" 
+        placeholder="Seleccione inicio"
+        appendTo="body"
+        styleClass="w-full"
+        [ngClass]="{'ng-invalid ng-dirty': inicioInput.invalid && (inicioInput.dirty || inicioInput.touched)}">
+      </p-datepicker>
+    </div>
+
+    <div class="col-12 md:col-6 field mb-3 flex flex-column gap-2 text-left">
+      <label for="fecha_limite" class="font-semibold" style="color: #475569;">Fecha Límite</label>
+      <p-datepicker 
+        id="fecha_limite" 
+        [(ngModel)]="tarea.fechaLimite" 
+        name="fechaLimite"
+        #limiteInput="ngModel"
+        dateFormat="yy-mm-dd" 
+        placeholder="Seleccione límite"
+        appendTo="body"
+        styleClass="w-full"
+        [ngClass]="{'ng-invalid ng-dirty': limiteInput.invalid && (limiteInput.dirty || limiteInput.touched)}">
+      </p-datepicker>
+    </div>
+  </div>
+
+  <div class="px-3 mb-3">
+    <small class="p-error block" *ngIf="tarea.fechaInicio && tarea.fechaLimite && !fechasValidas()">
+      <i class="pi pi-exclamation-triangle mr-1"></i> La fecha límite no puede ser anterior a la de inicio.
+    </small>
+  </div>
+
+  <div class="footer-actions">
+    <p-button label="GUARDAR" styleClass="btn-guardar-premium" (onClick)="guardar()" [disabled]="!formularioValido()"></p-button>
+  </div>
+</div>

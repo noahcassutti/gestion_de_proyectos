@@ -1,0 +1,63 @@
+<div class="main-container">
+
+  <main class="usuarios-content">
+  <div class="header-row">
+      <app-back></app-back>
+      
+  </div>
+
+  <div class="badge-wrapper">
+    <div class="badge-blue">
+      <div class="badge-icon-box">
+        <i class="pi pi-users badge-icon" style="font-size: 1.8rem; color: #1e293b;"></i>
+      </div>
+      <div class="badge-text-box" >
+        <span class="badge-title">USUARIOS</span>
+        <span class="badge-subtitle">Gestión de proyectos</span>
+      </div>
+    </div>
+  </div>
+<div>
+ <p-table 
+ 
+  #dt
+      [value]="usuarios"
+      responsiveLayout="scroll"
+      styleClass="custom-table"
+      [style]="{ width: '100%' }">
+
+      <ng-template pTemplate="header">
+        <tr>
+          <th class="col-nombre">Nombre de Usuario</th>
+          <th class="col-estado">Estado</th>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-usuario>
+        <tr>
+          <td class="col-cell">{{ usuario.nombre }}</td>
+          <td class="col-cell text-center">{{ usuario.estado }}</td>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="2" class="empty-cell">
+            No se encontraron usuarios activos
+          </td>
+        </tr>
+      </ng-template>
+    </p-table> 
+
+  <div class="footer-row">
+
+    <span class="footer-text">
+      DAW - Sistema de Gestión de Proyectos © 2026
+    </span>
+
+  </div>
+  
+  </div>
+
+  </main>
+</div>

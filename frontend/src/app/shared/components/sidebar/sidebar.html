@@ -1,0 +1,37 @@
+<div class="layout-wrapper">
+    <aside class="sidebar-hover">
+        <ul class="menu-list">
+            <li class="menu-item" (click)="navegarA('dashboard')">
+                <i class="pi pi-home"></i>
+                <span class="menu-text">Inicio</span>
+            </li>
+
+            <li class="menu-item" (click)="abrirNuevoProyecto()">
+                <i class="pi pi-folder-plus"></i>
+                <span class="menu-text">Nuevo proyecto</span>
+            </li>
+            
+            <li class="menu-item" (click)="navegarA('proyectos')">
+                <i class="pi pi-folder"></i>
+                <span class="menu-text">Proyectos</span>
+            </li>
+            <li class="menu-item" (click)="navegarA('clientes')">
+                <i class="pi pi-briefcase"></i> <span class="menu-text">Clientes</span>
+            </li>
+            
+            @if (rolActual === 'ADMIN') {
+                <li class="menu-item" (click)="navegarA('usuarios')">
+                    <i class="pi pi-users"></i>
+                    <span class="menu-text">Usuarios</span>
+                </li>
+            }
+        </ul>
+
+        <div class="menu-bottom">
+            <li class="menu-item" (click)="cerrarSesion()">
+            <i class="pi pi-sign-out"></i>
+            <span class="menu-text">Cerrar sesión</span>
+            </li>
+        </div>
+    </aside>
+</div>

@@ -1,0 +1,73 @@
+/* sidebar */
+.sidebar-hover {
+  width: 65px;
+  background-color: var(--p-bg-cyan-950); 
+  transition: width 0.3s ease; 
+  overflow: hidden; 
+  flex-direction: column;
+  justify-content: space-between;
+  border-right: 1px solid #1f3f4f;
+  z-index: 10;
+}
+
+.sidebar-hover:hover {
+  width: 250px; 
+}
+
+/* lista e items */
+.menu-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  margin-top: 20px;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  padding: 15px 20px;
+  cursor: pointer;
+  color: #a3bac7;
+  transition: background-color 0.2s, color 0.2s;
+  white-space: nowrap; 
+}
+
+.menu-item:hover {
+  background-color: #1a3c4d; 
+  color: #ffffff;
+}
+
+.menu-item.active {
+  background-color: #1f4a62;
+  color: #ffffff;
+  border-left: 3px solid var(bg-sky-500); /*menú activo */
+}
+
+/* Iconos de PrimeNG */
+.menu-item i {
+  font-size: 1.2rem;
+  min-width: 30px; 
+  text-align: left;
+}
+
+/* texto del menú */
+.menu-text {
+  margin-left: 10px;
+  font-weight: 600;
+  opacity: 0; 
+  transition: opacity 0.2s ease; 
+}
+
+.sidebar-hover:hover .menu-text {
+  opacity: 1;
+  transition-delay: 0.1s; 
+}
+
+/* contenido principal*/
+.main-content {
+  flex: 1; 
+  padding: 20px;
+  background-color: #08141a; 
+}
+
+

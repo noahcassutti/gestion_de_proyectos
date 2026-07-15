@@ -1,0 +1,11 @@
+.btnvolver {
+  background-color:var(--p-cyan-950)  !important;
+  color:var(--p-slate-50) !important;
+  border: 3px solid var(--p-slate-50) !important;
+  border-radius: 50% !important;
+  width: 40px !important;
+  height: 40px !important;
+}
+.btnvolver:hover{
+  background: var(--p-cyan-800) !important;
+}

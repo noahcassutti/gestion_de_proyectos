@@ -1,0 +1,134 @@
+CREATE EXTENSION IF NOT EXISTS pgcrypto;
+
+CREATE TYPE estados_usuarios AS ENUM ('ACTIVO', 'BAJA');
+CREATE TYPE estados_clientes AS ENUM ('ACTIVO', 'BAJA');
+CREATE TYPE estados_proyectos AS ENUM ('ACTIVO', 'FINALIZADO', 'BAJA');
+CREATE TYPE estados_tareas AS ENUM ('PENDIENTE', 'FINALIZADA', 'BAJA');
+CREATE TYPE roles_usuarios AS ENUM ('ADMIN', 'REGULAR');
+
+CREATE TABLE usuarios (
+    id SERIAL PRIMARY KEY,
+    nombre TEXT NOT NULL UNIQUE,
+    clave TEXT NOT NULL,
+    estado estados_usuarios NOT NULL,
+    rol roles_usuarios NOT NULL DEFAULT 'REGULAR'
+);
+
+CREATE TABLE clientes (
+    id SERIAL PRIMARY KEY,
+    nombre TEXT NOT NULL UNIQUE,
+    estado estados_clientes NOT NULL,
+    telefono TEXT, 
+    correo TEXT    
+);
+
+CREATE TABLE proyectos (
+    id SERIAL PRIMARY KEY,
+    nombre TEXT NOT NULL UNIQUE,
+    estado estados_proyectos NOT NULL,
+    id_cliente INT,
+    CONSTRAINT fk_proyectos_cliente
+        FOREIGN KEY (id_cliente)
+        REFERENCES clientes (id)
+);
+
+CREATE TABLE tareas (
+    id SERIAL PRIMARY KEY,
+    descripcion TEXT NOT NULL,
+    estado estados_tareas NOT NULL,
+    id_proyecto INT NOT NULL,
+    fecha_inicio TIMESTAMP,
+    fecha_limite TIMESTAMP,
+    CONSTRAINT fk_tareas_proyecto
+        FOREIGN KEY (id_proyecto)
+        REFERENCES proyectos (id)
+);
+
+INSERT INTO usuarios (nombre, clave, estado, rol) 
+VALUES ('usuario', crypt('clave', gen_salt('bf', 10)), 'ACTIVO', 'ADMIN');
+
+INSERT INTO usuarios (nombre, clave, estado, rol) 
+VALUES 
+('Victoria', crypt('clave123', gen_salt('bf', 10)), 'ACTIVO', 'REGULAR');
+
+INSERT INTO clientes (nombre, estado, telefono, correo) 
+VALUES 
+('Gobierno de la Provincia de Córdoba', 'ACTIVO', '+5493510000000', 'ministerio@cba.gov.ar'),
+('Universidad Nacional de Entre Ríos', 'ACTIVO', '+5493442000000', 'contacto@uner.edu.ar'),
+('zesty?thefox Content', 'ACTIVO', NULL, 'media@zestyfox.com'),
+('Cliente Antiguo SA', 'BAJA', '3512345678', NULL);
+
+INSERT INTO proyectos (nombre, estado, id_cliente) 
+VALUES 
+('Sistema Garita Rosario de Santa Fe', 'ACTIVO', 1),
+('Desarrollo Campus Virtual Web', 'ACTIVO', 2),
+('Publicación E-book Luz de invierno', 'FINALIZADO', 3),
+('Simulador de Examen Java SE 17', 'ACTIVO', NULL), -- Proyecto Interno (sin cliente)
+('Proyecto Legado Cancelado', 'BAJA', 4);
+
+INSERT INTO tareas (descripcion, estado, id_proyecto, fecha_inicio, fecha_limite) 
+VALUES 
+('Relevar necesidades con el policía de la entrada', 'FINALIZADA', 1, '2026-06-01 09:00:00', NULL),
+('Instalar cámaras y cableado', 'PENDIENTE', 1, '2026-06-05 10:00:00', '2026-06-25 18:00:00'),
+('Configurar JWT y Guards en NestJS', 'PENDIENTE', 2, '2026-06-10 08:00:00', '2026-06-20 23:59:59'),
+('Escribir poemas bajo seudónimo', 'FINALIZADA', 3, '2026-01-15 14:00:00', '2026-02-28 18:00:00'),
+('Maquetar en formato EPUB', 'FINALIZADA', 3, '2026-03-01 10:00:00', '2026-03-15 18:00:00'),
+('Programar sin descansos 365 días al año', 'PENDIENTE', 4, '2026-04-01 06:00:00', NULL),
+('Diseño de interfaz de usuario', 'BAJA', 5, '2026-05-01 10:00:00', '2026-05-10 18:00:00');
+
+
+
+INSERT INTO usuarios (nombre, clave, estado, rol) 
+VALUES 
+('Marcos', crypt('admin123', gen_salt('bf', 10)), 'ACTIVO', 'ADMIN'),
+('Lucia', crypt('user123', gen_salt('bf', 10)), 'BAJA', 'REGULAR'),
+('David', crypt('stayhard', gen_salt('bf', 10)), 'ACTIVO', 'REGULAR');
+
+INSERT INTO clientes (nombre, estado, telefono, correo) 
+VALUES 
+('Facultad de Administración - UNER', 'ACTIVO', '+5493442000111', 'desarrollo.web@uner.edu.ar'),
+('Gimnasio Alto Rendimiento Córdoba', 'ACTIVO', '+5493512223344', 'contacto@altorendimientocba.com'),
+('Agencia de Animación Zesty?TheFox', 'ACTIVO', NULL, 'animacion@zestythefox.com'),
+('Consultora Tecnológica Austral', 'BAJA', '+5491144556677', 'info@ctaustral.com.ar'),
+('Ministerio de Transporte', 'ACTIVO', '3510009999', 'transporte@cba.gov.ar');
+
+
+INSERT INTO proyectos (nombre, estado, id_cliente) 
+VALUES 
+('Portal de Alumnos TUDW', 'ACTIVO', (SELECT id FROM clientes WHERE nombre = 'Facultad de Administración - UNER')),
+('App de Seguimiento de Fuerza (Peso Muerto)', 'ACTIVO', (SELECT id FROM clientes WHERE nombre = 'Gimnasio Alto Rendimiento Córdoba')),
+('Campaña Redes Zesty?TheFox 2026', 'ACTIVO', (SELECT id FROM clientes WHERE nombre = 'Agencia de Animación Zesty?TheFox')),
+('Preparación Certificación Oracle Java SE 17', 'ACTIVO', NULL), -- Proyecto Interno
+('Armado Workstation Edición de Video', 'FINALIZADO', NULL), -- Proyecto Interno
+('Sistema de Bloqueo StayFocusd', 'FINALIZADO', NULL), -- Proyecto Interno
+('Migración Base de Datos Legada', 'BAJA', (SELECT id FROM clientes WHERE nombre = 'Consultora Tecnológica Austral')),
+('App Control Monopatines Eléctricos', 'ACTIVO', (SELECT id FROM clientes WHERE nombre = 'Ministerio de Transporte')),
+('Generador Pistas Lo-Fi Estudio', 'ACTIVO', NULL); -- Proyecto Interno
+
+
+INSERT INTO tareas (descripcion, estado, id_proyecto, fecha_inicio, fecha_limite) 
+VALUES 
+
+('Diseñar base de datos en PostgreSQL', 'FINALIZADA', (SELECT id FROM proyectos WHERE nombre = 'Portal de Alumnos TUDW'), '2026-05-01 10:00:00', '2026-05-15 10:00:00'),
+('Implementar Lazy Loading en grillas', 'PENDIENTE', (SELECT id FROM proyectos WHERE nombre = 'Portal de Alumnos TUDW'), '2026-06-14 08:00:00', '2026-06-20 18:00:00'),
+('Configurar Nginx y PM2', 'PENDIENTE', (SELECT id FROM proyectos WHERE nombre = 'Portal de Alumnos TUDW'), '2026-06-15 09:00:00', '2026-06-25 23:59:00'),
+
+
+('Testear registro de 180kg x 5 reps', 'FINALIZADA', (SELECT id FROM proyectos WHERE nombre = 'App de Seguimiento de Fuerza (Peso Muerto)'), '2026-04-10 14:00:00', '2026-04-10 16:00:00'),
+('Crear módulo de estadísticas PrimeNG', 'PENDIENTE', (SELECT id FROM proyectos WHERE nombre = 'App de Seguimiento de Fuerza (Peso Muerto)'), '2026-06-16 10:00:00', NULL),
+
+('Generar prompt para banner en CapCut IA', 'FINALIZADA', (SELECT id FROM proyectos WHERE nombre = 'Campaña Redes Zesty?TheFox 2026'), '2026-01-10 09:00:00', '2026-01-12 18:00:00'),
+('Diferenciar contenido de Citro', 'PENDIENTE', (SELECT id FROM proyectos WHERE nombre = 'Campaña Redes Zesty?TheFox 2026'), '2026-06-18 10:00:00', '2026-06-30 18:00:00'),
+
+('Completar temario básico', 'FINALIZADA', (SELECT id FROM proyectos WHERE nombre = 'Preparación Certificación Oracle Java SE 17'), '2026-02-01 08:00:00', '2026-03-01 18:00:00'),
+('Simulador de Examen 1Z0-829', 'PENDIENTE', (SELECT id FROM proyectos WHERE nombre = 'Preparación Certificación Oracle Java SE 17'), '2026-06-20 08:00:00', '2026-07-15 18:00:00'),
+
+('Comprar CPU y Motherboard', 'FINALIZADA', (SELECT id FROM proyectos WHERE nombre = 'Armado Workstation Edición de Video'), '2026-04-05 10:00:00', '2026-04-10 18:00:00'),
+('Ensamblar equipo', 'FINALIZADA', (SELECT id FROM proyectos WHERE nombre = 'Armado Workstation Edición de Video'), '2026-04-12 10:00:00', '2026-04-12 20:00:00'),
+
+('Componer pista base chill', 'PENDIENTE', (SELECT id FROM proyectos WHERE nombre = 'Generador Pistas Lo-Fi Estudio'), '2026-06-15 14:00:00', NULL),
+('Animar loop de fondo', 'PENDIENTE', (SELECT id FROM proyectos WHERE nombre = 'Generador Pistas Lo-Fi Estudio'), '2026-06-17 14:00:00', '2026-06-25 18:00:00'),
+
+('Reunión presencial cancelada', 'BAJA', (SELECT id FROM proyectos WHERE nombre = 'Migración Base de Datos Legada'), NULL, NULL),
+('Prototipo en Figma', 'BAJA', (SELECT id FROM proyectos WHERE nombre = 'Migración Base de Datos Legada'), '2026-01-10 09:00:00', '2026-01-20 18:00:00');
+

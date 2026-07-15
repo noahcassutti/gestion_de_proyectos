@@ -1,0 +1,83 @@
+<div class="modal-form">
+  <button type="button" class="close-button" (click)="cerrar()">
+    <i class="pi pi-times"></i>
+  </button>
+
+  <h2 class="modal-title">Nuevo Cliente</h2>
+
+  <div class="field">
+    <label for="nombre" class="field-label">NOMBRE DEL CLIENTE</label>
+    <input
+      id="nombre"
+      type="text"
+      pInputText
+      [(ngModel)]="cliente.nombre"
+      #nombreInput="ngModel"
+      required
+      minlength="5"
+      placeholder="Ej: Juan Pérez o Empresa S.A."
+      class="w-full custom-input"
+      [ngClass]="{'ng-invalid ng-dirty': nombreInput.invalid && (nombreInput.dirty || nombreInput.touched)}"
+    />
+    <div *ngIf="nombreInput.invalid && (nombreInput.dirty || nombreInput.touched)">
+        <small class="p-error block mt-1" *ngIf="nombreInput.errors?.['required']">El nombre es obligatorio.</small>
+        <small class="p-error block mt-1" *ngIf="nombreInput.errors?.['minlength']">Debe tener al menos 5 caracteres.</small>
+    </div>
+  </div>
+
+  <div class="field">
+    <label for="estado" class="field-label">ESTADO INICIAL</label>
+    <p-select
+      id="estado"
+      [options]="estadosDisponibles"
+      [(ngModel)]="cliente.estado"
+      placeholder="Seleccione un estado"
+      styleClass="w-full custom-select"
+      appendTo="body">
+    </p-select>
+  </div>
+
+  <div class="field">
+    <label for="telefono" class="field-label">TELÉFONO</label>
+    <input
+      id="telefono"
+      type="text"
+      pInputText
+      [(ngModel)]="cliente.telefono"
+      #telefonoInput="ngModel"
+      minlength="5"
+      pattern="^[0-9]+$"
+      placeholder="Ej: 3361543210"
+      class="w-full custom-input"
+      [ngClass]="{'ng-invalid ng-dirty': telefonoInput.invalid && (telefonoInput.dirty || telefonoInput.touched)}"
+    />
+    <div *ngIf="telefonoInput.invalid && (telefonoInput.dirty || telefonoInput.touched)">
+        <small class="p-error block mt-1" *ngIf="telefonoInput.errors?.['minlength']">Debe tener al menos 5 dígitos.</small>
+        <small class="p-error block mt-1" *ngIf="telefonoInput.errors?.['pattern']">Solo se permite número enteros</small>
+    </div>
+  </div>
+
+  <div class="field">
+    <label for="correo" class="field-label">CORREO ELECTRÓNICO</label>
+    <input
+      id="correo"
+      type="email"
+      pInputText
+      [(ngModel)]="cliente.correo"
+      #correoInput="ngModel"
+      minlength="5"
+      pattern="^[^\s@]+@[^\s@]+\.[^\s@]+$"
+      placeholder="Ej: cliente@correo.com"
+      class="w-full custom-input"
+      [ngClass]="{'ng-invalid ng-dirty': correoInput.invalid && (correoInput.dirty || correoInput.touched)}"
+    />
+    <div *ngIf="correoInput.invalid && (correoInput.dirty || correoInput.touched)">
+        <small class="p-error block mt-1" *ngIf="correoInput.errors?.['minlength']">Debe tener al menos 5 caracteres.</small>
+        <small class="p-error block mt-1" *ngIf="correoInput.errors?.['pattern']">El formato del correo no es válido.</small>
+    </div>
+  </div>
+
+  <div class="footer-actions">
+    <p-button label="GUARDAR" styleClass="btn-guardar-premium" (onClick)="guardar()" [disabled]="!formularioValido()"></p-button>
+  </div>
+</div>
